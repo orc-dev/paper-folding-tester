@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTestContext } from './components/TestContext.js'
-import TestPart from './components/TestPart.js';
+import TestRunner from './components/TestRunner.js';
 
 function App() {
     const { THEME, setThemeMode } = useTestContext();
@@ -20,10 +20,10 @@ function App() {
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [THEME, setThemeMode]);
+    }, [THEME, setThemeMode]);
 
     return (
-        <TestPart />
+        <TestRunner />
     );
 }
 

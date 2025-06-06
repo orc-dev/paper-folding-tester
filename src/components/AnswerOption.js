@@ -1,13 +1,8 @@
 import { useTestContext } from './TestContext';
 
-/**
- * Renders an SVG element representing an answer option for the paper folding 
- * task.The base is a square with simulated 'holes' - white circles that match 
- * the background color. A debug flag toggles the visibility of a 24×24 grid 
- * to help verify hole placement.
- */
+
 function AnswerOption({ holeList=[] }) {
-    const { THEME, themeMode } = useTestContext();
+    const { THEME, themeMode, blendAlphaStack } = useTestContext();
 
     // Geometry and size
     const sideSize = 24;
@@ -16,7 +11,7 @@ function AnswerOption({ holeList=[] }) {
     
     // Color and style
     const paperColor = (themeMode === THEME.BLACK_WHITE) 
-        ? '#fff' : 'rgba(213, 213, 255, 0.4)';
+        ? '#fff' : blendAlphaStack(1);
     
     const holeColor = '#fff';
     const strokeColor = '#333';
@@ -35,7 +30,7 @@ function AnswerOption({ holeList=[] }) {
             y1={y1}
             x2={x2}
             y2={y2}
-            stroke="#ddd"
+            stroke='#ddd'
             strokeWidth={strokeWidth.line}
             vectorEffect='non-scaling-stroke'
     />);

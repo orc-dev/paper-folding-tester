@@ -5,7 +5,7 @@ import AnswerOption from './AnswerOption';
 import { QUESTIONS } from '../constants/questions'; 
 
 
-function TestPart() {
+function TestRunner() {
     const [sid, setSid] = useState(null);  // Selected answer option index
     const [pid, setPid] = useState(0);     // Part Id
     const [qid, setQid] = useState(0);     // Question Id
@@ -19,13 +19,16 @@ function TestPart() {
 
     const onContinue = () => {
         console.log(`User selects '${getAnswerLabel(sid)}'`);
+        // Write data for current question
+        // todo...
         
+        // Advance pid and qid to prepare next question
         if (qid + 1 < QUESTIONS[pid].length) {
-            setQid(old => old + 1);
+            setQid(idx => idx + 1);
             setSid(null);
         } 
         else if (pid + 1 < QUESTIONS.length) {
-            setPid(old => old + 1);
+            setPid(idx => idx + 1);
             setQid(0);
             setSid(null);
         } 
@@ -53,7 +56,6 @@ function TestPart() {
             Part {pid + 1} &ndash; Question {qid + 1}
         </div>
     );
-
 
     const continueButton = (
         <div style={{
@@ -146,4 +148,4 @@ function TestPart() {
     );
 }
 
-export default TestPart;
+export default TestRunner;
