@@ -1,5 +1,5 @@
 import { useTestContext } from './TestContext';
-
+import { Row, Col } from 'antd';
 
 function AnswerOption({ holeList=[] }) {
     const { THEME, themeMode, blendAlphaStack } = useTestContext();
@@ -44,7 +44,6 @@ function AnswerOption({ holeList=[] }) {
         })}
     </>);
     
-
     return (
         <svg
             className='answer-option'
@@ -85,4 +84,53 @@ function AnswerOption({ holeList=[] }) {
     );
 }
 
-export default AnswerOption;
+function AnswerOptions({ question, sid, setSid, locked }) {
+    
+    const getBoxShadow = (i) => {
+        if (i !== sid) {
+            return 'none';
+        }
+        if (locked) {
+            return '0 0 0 3px hsl(249, 8.90%, 84.50%)';
+        }
+        return '0 0 0 3px hsl(248, 100%, 54.7%)';
+    }
+
+    return (
+        <div style={{textAlign: 'center'}}>
+            <Row gutter={[24, 24]} justify='start'>
+                {question?.answerOptions.map((holeList, i) => (
+                    <Col key={i}>
+                        <div
+                            onClick={() => {
+                                if (locked) return;
+                                setSid(i);
+                            }}
+                            style={{
+                                boxShadow: getBoxShadow(i),
+                                borderRadius: 8,
+                                padding: 12,
+                                cursor: (locked) ? 'default' : 'pointer',
+                                boxSizing: 'border-box',
+                            }}
+                        >
+                            <AnswerOption holeList={holeList} />
+                            
+                            { /* Answer labels */}
+                            <div style={{ 
+                                marginTop: 4,
+                                fontSize: 24, 
+                                fontWeight: (i === sid) ? 'bold' : 'normal',
+                                color: (i === sid) ? '#000' : '#ccc',
+                            }}>
+                                {'ABCDE'[i]}
+                            </div>
+                        </div>
+                    </Col>
+                ))}
+            </Row>
+        </div>
+    );
+}
+
+export default AnswerOptions;

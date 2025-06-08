@@ -1302,3 +1302,217 @@ const PART_2 = [
 ];
 
 export const QUESTIONS = [ PART_1, PART_2 ];
+
+export const EXAMPLE = { //-------------------------------------------- Q.1
+        partLabel: -1,
+        questionLabel: -1,
+        questionFrames: [
+            FRAME_0,
+            // Frame.1
+            {
+                polygons: [
+                    {
+                        pts: [[0,0],[0,12],[24,12],[24,0]],
+                        fVal: 2,
+                        sVal: 1,
+                    },
+                ],
+            },
+            // Frame.2
+            {
+                polygons: [
+                    {
+                        pts: [[0,0],[0,12],[24,12],[24,0]],
+                        fVal: 2,
+                        sVal: 1,
+                    },
+                ],
+                hole: [6,6],
+            },
+        ],
+        answerOptions: [
+            [[3,9],[9,3]], 
+            [[6,6],[18,18]], 
+            [[6,6],[6,18]], 
+            [[18,6],[6,18]], 
+            [[6,6],[18,6]], 
+        ],
+        answerKeyNum: 2,
+};
+
+
+/**
+ * Below are some points for drawing the 'pencil' on one illustration frame
+ */
+const pi = Math.PI;
+const sin45 = Math.sin(pi * 0.25);
+// punching-point (start)
+const x0 = 6 - sin45;
+const y0 = 6 - sin45;
+// pencil-end (start)
+const x1 = x0 + 10;
+const y1 = y0 - 10;
+// pencil-end (end)
+const x2 = x1 + 2 * sin45;
+const y2 = y1 + 2 * sin45;
+// punching-point (end)
+const x3 = 6 + sin45;
+const y3 = 6 + sin45;
+// pencil-head (start)
+const x4 = x0 - 7;
+const y4 = y0 + 7;
+// pencil-tip
+const x5 = 6 - 10;
+const y5 = 6 + 10;
+// pencil-head (end)
+const x6 = x4 + 2 * sin45;
+const y6 = y4 + 2 * sin45;
+
+export const FOLDING_STEPS = [
+    FRAME_0,
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,12],[24,12],[24,0]],
+                fVal: 1,
+                sVal: 1,
+            },
+        ],
+        postPath: [
+            {
+                data: `
+                    M 0 12
+                    A 6 6 0 0 1 5 17
+                    L 29 17
+                    A 6 6 0 0 0 24 12
+                    Z
+                `,
+                fVal: 1,
+                sVal: 1,
+            },
+        ],
+    },
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,12],[24,12],[24,0]],
+                fVal: 2,
+                sVal: 1,
+            },
+        ],
+    },
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,12],[24,12],[24,0]],
+                fVal: 2,
+                sVal: 1,
+            },
+        ],
+        hole: [[6,6]],
+        prePath:[
+            {
+                data: `
+                    M ${x0} ${y0}
+                    L ${x4} ${y4}
+                    L ${x5} ${y5}
+                    L ${x6} ${y6}
+                    L ${x2} ${y2}
+                `,
+                fVal: 1,
+                sVal: 1,
+                fill: 'rgb(234, 159, 53)',
+            }
+        ],
+        postPath: [
+            {
+                data: `
+                    M ${x0} ${y0}
+                    L ${x1} ${y1}
+                    A 1 1 0 0 1 ${x2} ${y2}
+                    L ${x3} ${y3}
+                    A 1 1 0 0 1 ${x0} ${x0}
+                `,
+                fVal: 1,
+                sVal: 1,
+                fill: 'rgb(234, 159, 53)',
+            },
+            {
+                data: `
+                    M ${17} ${-4}
+                    A 1 1 0 1 0 ${15} ${-4}
+                    A 1 1 0 1 0 ${17} ${-4}
+                `,
+                fVal: 1,
+                sVal: 1,
+                fill: 'rgb(234, 159, 53)',
+            },
+        ],
+    },
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,12],[24,12],[24,0]],
+                fVal: 2,
+                sVal: 1,
+            },
+        ],
+        hole: [[6,6]],
+    },
+];
+
+export const UNFOLDING_STEPS = [
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,12],[24,12],[24,0]],
+                fVal: 2,
+                sVal: 1,
+            },
+        ],
+        hole: [[6,6]],
+    },
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,12],[24,12],[24,0]],
+                fVal: 1,
+                sVal: 1,
+            },
+        ],
+        postPath: [
+            {
+                data: `
+                    M 0 12
+                    A 6 6 0 0 1 5 17
+                    L 29 17
+                    A 6 6 0 0 0 24 12
+                    Z
+                `,
+                fVal: 1,
+                sVal: 1,
+            },
+            {
+                data: `
+                    M ${10} ${14}
+                    A 1 0.45 0 1 0 ${7.5} ${14}
+                    A 1 0.45 0 1 0 ${10} ${14}
+                `,
+                fVal: 1,
+                sVal: 1,
+                fill: 'rgb(255, 255, 255)',
+            },
+        ],
+        hole: [[6,6]],
+    },
+    {
+        polygons: [
+            {
+                pts: [[0,0],[0,24],[24,24],[24,0]],
+                fVal: 1,
+                sVal: 1,
+            },
+        ],
+        hole: [[6,6], [6,18]],
+    },
+];

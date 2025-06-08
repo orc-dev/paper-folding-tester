@@ -7,6 +7,7 @@ export const useTestContext = () => useContext(TestContext);
 export const TestContextProvider = ({ children }) => {
     // Login auth
     // ...
+    
 
     // Theme enum
     const THEME = Object.freeze({

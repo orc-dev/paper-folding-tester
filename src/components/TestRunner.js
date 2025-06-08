@@ -1,19 +1,21 @@
 import { useState } from 'react';
-import { Button, Row, Col, Divider } from 'antd';
-import QuestionFrame from './QuestionFrame';
-import AnswerOption from './AnswerOption';
+import { Button, Divider } from 'antd';
+import TestInstruction from './TestInstruction';
+import QuestionFrames from './QuestionFrames';
+import AnswerOptions from './AnswerOptions';
 import { QUESTIONS } from '../constants/questions'; 
 
 
 function TestRunner() {
+    const [readInstruction, setReadInstruction] = useState(false);
     const [sid, setSid] = useState(null);  // Selected answer option index
     const [pid, setPid] = useState(0);     // Part Id
     const [qid, setQid] = useState(0);     // Question Id
     const [completed, setCompleted] = useState(false);
 
-    const handleOptionClick = (index) => {
-        setSid(index);
-    };
+    if (!readInstruction) {
+        return <TestInstruction setReady={setReadInstruction}/>
+    }
 
     const getAnswerLabel = (i) => 'ABCDE'[i];
 
@@ -70,7 +72,7 @@ function TestRunner() {
                     width: 300, 
                     height: 50, 
                     fontSize: 20, 
-                    fontWeight: sid === null ? 'normal' : 'bold',
+                    fontWeight: (sid === null) ? 'normal' : 'bold',
                 }}
                 disabled={sid === null}
                 onClick={() => onContinue(sid)}
@@ -80,67 +82,22 @@ function TestRunner() {
         </div>
     );
 
-    const questionFrames = (
-        <div>
-            <Row gutter={[24, 24]} justify='start'>
-                {QUESTIONS[pid][qid]?.questionFrames.map((frameData, i) => (
-                    <Col key={i}>
-                        <div style={{padding: 12}}>
-                            <QuestionFrame frameData={frameData} scale={1.5} />
-                        </div>
-                    </Col>
-                ))}
-            </Row>
-        </div>
-    );
-
-    const answerOptions = (
-        <div>
-            <Row gutter={[24, 24]} justify='start'>
-                {QUESTIONS[pid][qid]?.answerOptions.map((holeList, i) => (
-                    <Col key={i}>
-                        <div
-                            onClick={() => handleOptionClick(i)}
-                            style={{
-                                boxShadow: (i === sid)
-                                    ? '0 0 0 3px hsl(248, 100%, 54.7%)'
-                                    : 'none',
-                                borderRadius: 8,
-                                padding: 12,
-                                cursor: 'pointer',
-                                boxSizing: 'border-box',
-                            }}
-                        >
-                            <AnswerOption holeList={holeList} />
-                            
-                            { /* Answer labels */}
-                            <div style={{ 
-                                marginTop: 4,
-                                fontSize: 24, 
-                                fontWeight: (i === sid) ? 'bold' : 'normal',
-                                color: (i === sid) ? '#000' : '#ccc',
-                            }}>
-                                {getAnswerLabel(i)}
-                            </div>
-                        </div>
-                    </Col>
-                ))}
-            </Row>
-        </div>
-    );
-
     return (
         <div>
             {questionLabel}
             <div 
-                key={`q-${pid}-${qid}`} 
+                key={`k${pid}-${qid}`}
                 className='fade-in' 
                 style={{ textAlign: 'center', marginTop: 60 }}
             >
                 <div style={{ display: 'inline-block' }}>
-                    {questionFrames}
+                    <QuestionFrames question={QUESTIONS[pid][qid]} />
                     <Divider />
-                    {answerOptions}
+                    <AnswerOptions 
+                        question={QUESTIONS[pid][qid]} 
+                        sid={sid}
+                        setSid={setSid}
+                    />
                 </div>
             </div>
             {continueButton}

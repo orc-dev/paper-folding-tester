@@ -1,4 +1,5 @@
 import { useTestContext } from './TestContext';
+import { Row, Col } from 'antd';
 
 function QuestionFrame({ frameData }) {
     const { THEME, themeMode, blendAlphaStack } = useTestContext();
@@ -77,4 +78,20 @@ function QuestionFrame({ frameData }) {
     );
 }
 
-export default QuestionFrame;
+function QuestionFrames({question}) {
+    return (
+        <div>
+            <Row gutter={[24, 24]} justify='start'>
+                {question?.questionFrames.map((frameData, i) => (
+                    <Col key={i}>
+                        <div style={{padding: 12}}>
+                            <QuestionFrame frameData={frameData} />
+                        </div>
+                    </Col>
+                ))}
+            </Row>
+        </div>
+    );
+}
+
+export default QuestionFrames;
