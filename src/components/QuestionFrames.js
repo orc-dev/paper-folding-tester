@@ -1,8 +1,9 @@
-import { useTestContext } from './TestContext';
 import { Row, Col } from 'antd';
+import { useTestContext } from './TestContext';
+
 
 function QuestionFrame({ frameData }) {
-    const { THEME, themeMode, blendAlphaStack } = useTestContext();
+    const { themeMode, computeFill } = useTestContext();
 
     // Geometry and style constants
     const sideSize = 24;
@@ -15,18 +16,6 @@ function QuestionFrame({ frameData }) {
         circle: 1.5,
     };
 
-    const ComputefillColor = (weight) => {
-        if (themeMode === THEME.BLACK_WHITE) {
-            return '#fff';
-        }
-        if (themeMode === THEME.SOLID_COLOR) {
-            return blendAlphaStack(1);
-        }
-        if (themeMode === THEME.ALPHA_BLENDING) {
-            return blendAlphaStack(weight);
-        }
-    };
-
     return (
         <svg
             width={sideSize * scale}
@@ -34,6 +23,22 @@ function QuestionFrame({ frameData }) {
             viewBox={`0 0 ${sideSize} ${sideSize}`}
             style={{ overflow: 'visible' }}
         >
+            {/* pre-path */}
+            {Array.isArray(frameData?.prePath) &&
+                frameData?.prePath?.map((path, index) => (
+                    <path
+                        key={index}
+                        d={path.data}
+                        fill={path.fill || computeFill(themeMode, path.fVal)}
+                        stroke={strokeColor}
+                        strokeWidth={strokeWidth.poly * path.sVal}
+                        strokeLinecap='round'
+                        vectorEffect='non-scaling-stroke'
+                        strokeLinejoin='round'
+                    />
+                ))
+            }
+
             {/* Base square with dashed border */}
             <rect
                 x={0}
@@ -49,42 +54,58 @@ function QuestionFrame({ frameData }) {
             />
 
             {/* Render polygons */}
-            {frameData.polygons?.map((poly, i) => (
+            {frameData?.polygons?.map((poly, i) => (
                 <polygon
                     key={i}
                     points={poly.pts.map(([x, y]) => `${x},${y}`).join(' ')}
-                    fill={ComputefillColor(poly.fVal)}
+                    fill={poly.fill || computeFill(themeMode, poly.fVal)}
                     stroke={strokeColor}
                     strokeWidth={strokeWidth.poly * poly.sVal}
                     strokeLinecap='round'
-                    vectorEffect='non-scaling-stroke'  // Keep stroke width fixed during zoom/scale
-                    strokeLinejoin='round'             // Soften sharp corners to avoid pointy tips
+                    vectorEffect='non-scaling-stroke'
+                    strokeLinejoin='round'
                 />
             ))}
 
-            {/* hole */}
-            {frameData.hole && (
+            {/* holes */}
+            {frameData?.hole?.map(([x, y], index) => (
                 <circle
-                    cx={frameData.hole[0]}
-                    cy={frameData.hole[1]}
+                    key={index}
+                    cx={x}
+                    cy={y}
                     r={holeRadius}
                     fill='#fff'
                     stroke={strokeColor}
                     strokeWidth={strokeWidth.circle}
                     vectorEffect='non-scaling-stroke'
                 />
-            )}
+            ))}
+
+            {/* post-path */}
+            {frameData?.postPath?.map((path, index) => (
+                <path
+                    key={index}
+                    d={path.data}
+                    fill={path.fill || computeFill(themeMode, path.fVal)}
+                    stroke={strokeColor}
+                    strokeWidth={strokeWidth.poly * path.sVal}
+                    strokeLinecap='round'
+                    vectorEffect='non-scaling-stroke'
+                    strokeLinejoin='round'
+                />
+            ))}
         </svg>
     );
 }
 
-function QuestionFrames({question}) {
+
+function QuestionFrames({frames, padding=12}) {
     return (
         <div>
             <Row gutter={[24, 24]} justify='start'>
-                {question?.questionFrames.map((frameData, i) => (
+                {frames?.map((frameData, i) => (
                     <Col key={i}>
-                        <div style={{padding: 12}}>
+                        <div style={{padding: padding}}>
                             <QuestionFrame frameData={frameData} />
                         </div>
                     </Col>

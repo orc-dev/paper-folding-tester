@@ -1,18 +1,14 @@
 import { useTestContext } from './TestContext';
 import { Row, Col } from 'antd';
 
+
 function AnswerOption({ holeList=[] }) {
-    const { THEME, themeMode, blendAlphaStack } = useTestContext();
+    const { themeMode, computeFill } = useTestContext();
 
     // Geometry and size
     const sideSize = 24;
     const holeRadius = 1;
     const scale = 6;
-    
-    // Color and style
-    const paperColor = (themeMode === THEME.BLACK_WHITE) 
-        ? '#fff' : blendAlphaStack(1);
-    
     const holeColor = '#fff';
     const strokeColor = '#333';
     const strokeWidth = {
@@ -58,7 +54,7 @@ function AnswerOption({ holeList=[] }) {
                 y='0'
                 width={sideSize}
                 height={sideSize}
-                fill={paperColor}
+                fill={computeFill(themeMode)}
                 stroke={strokeColor}
                 strokeWidth={strokeWidth.rect}
                 vectorEffect='non-scaling-stroke'
@@ -84,7 +80,7 @@ function AnswerOption({ holeList=[] }) {
     );
 }
 
-function AnswerOptions({ question, sid, setSid, locked }) {
+function AnswerOptions({ frames, sid, setSid, locked=false }) {
     
     const getBoxShadow = (i) => {
         if (i !== sid) {
@@ -99,7 +95,7 @@ function AnswerOptions({ question, sid, setSid, locked }) {
     return (
         <div style={{textAlign: 'center'}}>
             <Row gutter={[24, 24]} justify='start'>
-                {question?.answerOptions.map((holeList, i) => (
+                {frames?.map((holeList, i) => (
                     <Col key={i}>
                         <div
                             onClick={() => {

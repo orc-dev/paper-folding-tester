@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, Divider } from 'antd';
+import { QUESTIONS } from '../constants/questions'; 
 import TestInstruction from './TestInstruction';
 import QuestionFrames from './QuestionFrames';
 import AnswerOptions from './AnswerOptions';
-import { QUESTIONS } from '../constants/questions'; 
 
 
 function TestRunner() {
@@ -91,10 +91,12 @@ function TestRunner() {
                 style={{ textAlign: 'center', marginTop: 60 }}
             >
                 <div style={{ display: 'inline-block' }}>
-                    <QuestionFrames question={QUESTIONS[pid][qid]} />
+                    <QuestionFrames 
+                        frames={QUESTIONS[pid][qid].questionFrames} 
+                    />
                     <Divider />
                     <AnswerOptions 
-                        question={QUESTIONS[pid][qid]} 
+                        frames={QUESTIONS[pid][qid].answerOptions} 
                         sid={sid}
                         setSid={setSid}
                     />

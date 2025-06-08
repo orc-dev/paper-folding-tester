@@ -3,7 +3,6 @@ import { Button, Divider } from 'antd';
 import { EXAMPLE, FOLDING_STEPS, UNFOLDING_STEPS } from '../constants/questions';
 import QuestionFrames from './QuestionFrames';
 import AnswerOptions from './AnswerOptions';
-import StepFrames from './StepFrames';
 
 
 function TestInstruction({ setReady }) {
@@ -88,7 +87,7 @@ function TestInstruction({ setReady }) {
                 fold, and the <b>final diagram</b> indicates where the hole 
                 is punched.
             </p>
-            <QuestionFrames question={EXAMPLE} />
+            <QuestionFrames frames={EXAMPLE.questionFrames} />
             <p>
                 Your task is to select the option below that correctly shows 
                 where the holes will appear after the paper is <b>completely 
@@ -97,7 +96,7 @@ function TestInstruction({ setReady }) {
                 the <b>Continue</b> button to move on.
             </p>
             <AnswerOptions 
-                question={EXAMPLE} 
+                frames={EXAMPLE.answerOptions} 
                 sid={sid} 
                 setSid={setSid} 
                 locked={clickedContinue}
@@ -123,13 +122,13 @@ function TestInstruction({ setReady }) {
                     The figures below show how the paper 
                     is <b>folded</b> and <b>punched</b>.
                 </p>
-                <StepFrames frames={FOLDING_STEPS} />
+                <QuestionFrames frames={FOLDING_STEPS} padding={24} />
 
                 <p>
                     Fully <b>unfolding</b> the punched paper reveals two 
                     holes on the left side, as shown below.
                 </p>
-                <StepFrames frames={UNFOLDING_STEPS} />
+                <QuestionFrames frames={UNFOLDING_STEPS} padding={24} />
 
                 <p>
                     If you are ready, please click the <b>Start 

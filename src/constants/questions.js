@@ -45,7 +45,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [9,15],
+                hole: [[9,15]],
             },
         ],
         answerOptions: [
@@ -91,7 +91,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [21,15],
+                hole: [[21,15]],
             },
         ],
         answerOptions: [
@@ -162,7 +162,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [21,3],
+                hole: [[21,3]],
             },
         ],
         answerOptions: [
@@ -208,7 +208,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [15,21],
+                hole: [[15,21]],
             },
         ],
         answerOptions: [
@@ -264,7 +264,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [15,9],
+                hole: [[15,9]],
             },
         ],
         answerOptions: [
@@ -355,7 +355,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [18,18],
+                hole: [[18,18]],
             },
         ],
         answerOptions: [
@@ -411,7 +411,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [3,15],
+                hole: [[3,15]],
             },
         ],
         answerOptions: [
@@ -517,7 +517,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [15,15],
+                hole: [[15,15]],
             },
         ],
         answerOptions: [
@@ -583,7 +583,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [21,9],
+                hole: [[21,9]],
             },
         ],
         answerOptions: [
@@ -674,7 +674,7 @@ const PART_1 = [
                         sVal: 1,
                     },
                 ],
-                hole: [9,15],
+                hole: [[9,15]],
             },
         ],
         answerOptions: [
@@ -713,7 +713,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [18,6],
+                hole: [[18,6]],
             },
         ],
         answerOptions: [
@@ -759,7 +759,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [3,21],
+                hole: [[3,21]],
             },
         ],
         answerOptions: [
@@ -810,7 +810,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [18,12],
+                hole: [[18,12]],
             },
         ],
         answerOptions: [
@@ -856,7 +856,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [18,12],
+                hole: [[18,12]],
             },
         ],
         answerOptions: [
@@ -932,7 +932,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [9,9],
+                hole: [[9,9]],
             },
         ],
         answerOptions: [
@@ -993,7 +993,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [18,12],
+                hole: [[18,12]],
             }, 
         ],
         answerOptions: [
@@ -1074,7 +1074,7 @@ const PART_2 = [
                         sVal: 1,
                     }
                 ],
-                hole: [21,3],
+                hole: [[21,3]],
             },
         ],
         answerOptions: [
@@ -1150,7 +1150,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [9,15],
+                hole: [[9,15]],
             },
         ],
         answerOptions: [
@@ -1221,7 +1221,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [9,15],
+                hole: [[9,15]],
             },
         ],
         answerOptions: [
@@ -1287,7 +1287,7 @@ const PART_2 = [
                         sVal: 1,
                     },
                 ],
-                hole: [21,15],
+                hole: [[21,15]],
             },
         ],
         answerOptions: [
@@ -1327,7 +1327,7 @@ export const EXAMPLE = { //-------------------------------------------- Q.1
                         sVal: 1,
                     },
                 ],
-                hole: [6,6],
+                hole: [[6,6]],
             },
         ],
         answerOptions: [
