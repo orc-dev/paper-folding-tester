@@ -59,13 +59,11 @@ function TestInstruction({ setReady }) {
         </div>
     );
 
-
     const onStartButton = () => {
-        inTesting.current.setInProgress();
-        setReady(true);
-
         partQuestionRef.current.partId = 0;
         partQuestionRef.current.questionId = 0;
+        inTesting.current.setInProgress();
+        setReady(true);
     }
 
     const startTestButton = (

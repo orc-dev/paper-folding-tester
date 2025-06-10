@@ -4,19 +4,15 @@ import { DisplacementChecker } from '../utils/DisplacementChecker';
 import { StatusTracker } from '../utils/StatusTracker';
 import { useTestContext } from './TestContext';
 
-function RealTimeLoopManager() {
+function MouseEventRecorder() {
     const { 
         csvDataBuf, mousePosRef, inTesting, 
         partQuestionRef, objHoverOn 
     } = useTestContext();
 
-    const currentHover = useRef('none');
+    const currentHover = useRef('START');
 
-    //Fix this!!
-    function getStep(lastRow) {
-        return lastRow ? (lastRow[3] + 1) : 0;
-    }
-
+    // Contains mouse move and mouse click handlers
     useEffect(() => {
         const dispChecker = new DisplacementChecker(MIN_DISPLACEMENT_THR);
 
@@ -44,7 +40,7 @@ function RealTimeLoopManager() {
                     partQuestionRef.current.partId + 1,
                     partQuestionRef.current.questionId + 1,
                     formatTime(),
-                    getStep(csvDataBuf.current.at(-1)),
+                    (csvDataBuf.current.at(-1)?.[3] + 1) || 0,
                     x,
                     y,
                     currentHover.current,
@@ -69,7 +65,7 @@ function RealTimeLoopManager() {
                 partQuestionRef.current.partId + 1,
                 partQuestionRef.current.questionId + 1,
                 formatTime(),
-                getStep(csvDataBuf.current.at(-1)),
+                (csvDataBuf.current.at(-1)?.[3] + 1) || 0,
                 x,
                 y,
                 currentHover.current,
@@ -90,4 +86,4 @@ function RealTimeLoopManager() {
     return null;
 }
 
-export default RealTimeLoopManager;
+export default MouseEventRecorder;

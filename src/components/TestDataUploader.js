@@ -8,7 +8,7 @@ function TestDataUploader() {
     };
 
     return (
-        <div style={styles.localTopDiv} >
+        <div style={styles.localTopDiv}>
             <div style={styles.textDiv}>
                 {message}
             </div>

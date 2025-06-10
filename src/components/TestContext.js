@@ -7,9 +7,7 @@ const TestContext = createContext();
 export const useTestContext = () => useContext(TestContext);
 
 export const TestContextProvider = ({ children }) => {
-    
     // States and refs
-    const [testCompleted, setTestCompleted] = useState(false);
     const [themeMode, setThemeMode] = useState(THEME.ALPHA_BLENDING);
 
     // Meta data
@@ -28,23 +26,15 @@ export const TestContextProvider = ({ children }) => {
     const inTesting = useRef(new StatusTracker());
     const partQuestionRef = useRef({ partId: -1, questionId: -1 });
     const objRef = useRef({
-        QF1: null,
-        QF2: null,
-        QF3: null,
-        QF4: null,
-        QF5: null,
-        AO1: null,
-        AO2: null,
-        AO3: null,
-        AO4: null,
-        AO5: null,
+        QF1: null, QF2: null, QF3: null, QF4: null, QF5: null,
+        AO1: null, AO2: null, AO3: null, AO4: null, AO5: null,
         CONF: null,
     });
     
     return (
         <TestContext.Provider
             value={{
-                testCompleted, setTestCompleted, themeMode, setThemeMode,
+                themeMode, setThemeMode,
                 csvDataBuf, mousePosRef, inTesting, objHoverOn, metaData,
                 partQuestionRef, objRef,
             }}

@@ -11,29 +11,26 @@ import { OBJ_LIST, formatTime } from '../constants/config';
 
 
 function TestRunner() {
-    const { inTesting, objHoverOn, objRef, mousePosRef,
-        partQuestionRef, csvDataBuf } = useTestContext();
+    const { 
+        inTesting, objHoverOn, objRef, mousePosRef,
+        partQuestionRef, csvDataBuf 
+    } = useTestContext();
+
     const [readInstruction, setReadInstruction] = useState(false);
-    const [sid, setSid] = useState(null);  // Selected answer option index
+    const [finishQuestions, setFinishQuestions] = useState(false);
     const [pid, setPid] = useState(0);     // Part Id
     const [qid, setQid] = useState(0);     // Question Id
-    const [completed, setCompleted] = useState(false);
-
-    // if (!completed) {
-    //     return <TestDataUploader />;
-    // }
-
+    const [sid, setSid] = useState(null);  // Selected answer option index
+    
     if (!readInstruction) {
         return <TestInstruction setReady={setReadInstruction}/>;
     }
-    if (completed) {
+    if (finishQuestions) {
         return <TestDataUploader />;
     }
 
-    const getAnswerLabel = (i) => 'ABCDE'[i];
-
     const onConfirm = () => {
-        console.log(`User selects '${getAnswerLabel(sid)}'`);
+        console.log(`User selects '${'ABCDE'[sid]}'`);
         
         // Write the last record for the current question
         if (inTesting.current.status === StatusTracker.IN_PROGRESS) {
@@ -66,7 +63,7 @@ function TestRunner() {
         else {
             // set some global variables
             setSid(null);
-            setCompleted(true);
+            setFinishQuestions(true);
             inTesting.current.setCompleted();
         }
 
@@ -84,7 +81,6 @@ function TestRunner() {
             ];
             csvDataBuf.current.push(record);
         }
-
         // Reset objRef
         Object.keys(objRef.current).forEach((key) => {
             objRef.current[key] = null;

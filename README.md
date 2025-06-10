@@ -53,7 +53,7 @@
 
 
 ### Sampling Policy
-- `Minimum Displacement Threshold`: **12 units**.
+- `Minimum Displacement Threshold`: **20 units**.
 - **Click events** are **ALWAYS** recorded, regardless.
 - **Hover Object changing** are **ALWAYS** recorded.
 

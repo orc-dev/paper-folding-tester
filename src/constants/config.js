@@ -71,7 +71,7 @@ export function computeFill(mode, n=1) {
 };
 
 
-export const MIN_DISPLACEMENT_THR = 12;
+export const MIN_DISPLACEMENT_THR = 10;
 
 export const CSV_HEADER = Object.freeze(
     Object.fromEntries([
