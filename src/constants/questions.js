@@ -1302,6 +1302,10 @@ const PART_2 = [
 ];
 
 export const QUESTIONS = [ PART_1, PART_2 ];
+export const quiz = [
+    PART_1.slice(0, 2),
+    PART_2.slice(0, 2),
+];
 
 export const EXAMPLE = { //-------------------------------------------- Q.1
         partLabel: -1,

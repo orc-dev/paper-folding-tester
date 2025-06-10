@@ -1,18 +1,21 @@
 import { useState, useRef } from 'react';
 import { Button, Divider } from 'antd';
 import { EXAMPLE, FOLDING_STEPS, UNFOLDING_STEPS } from '../constants/questions';
+import { useTestContext } from './TestContext';
 import QuestionFrames from './QuestionFrames';
 import AnswerOptions from './AnswerOptions';
 
 
 function TestInstruction({ setReady }) {
+
+    const { inTesting, partQuestionRef } = useTestContext();
     const [sid, setSid] = useState(null);
-    const [clickedContinue, setClickedContinue] = useState(false);
+    const [confirmed, setConfirmed] = useState(false);
     const secondPartRef = useRef(null);
 
-    const onContinue = () => {
+    const onConfirm = (sid) => {
         console.log(`User selects '${'ABCDE'[sid]}'`);
-        setClickedContinue(true);
+        setConfirmed(true);
 
         // Wait for the DOM to update, then scroll
         setTimeout(() => {
@@ -35,10 +38,10 @@ function TestInstruction({ setReady }) {
         </div>
     );
     
-    const continueButton = (
+    const confirmButton = (
         <div style={{
             marginTop: 30,
-            marginBottom: (clickedContinue) ? 20 : 70,
+            marginBottom: (confirmed) ? 20 : 70,
         }}>
             <Button
                 type='primary'
@@ -46,15 +49,24 @@ function TestInstruction({ setReady }) {
                     width: 300, 
                     height: 50, 
                     fontSize: 20, 
-                    fontWeight: (sid === null || clickedContinue) ? 'normal' : 'bold',
+                    fontWeight: (sid === null || confirmed) ? 'normal' : 'bold',
                 }}
-                disabled={sid === null || clickedContinue}
-                onClick={() => onContinue(sid)}
+                disabled={sid === null || confirmed}
+                onClick={() => onConfirm(sid)}
             >
-                Continue
+                Confirm
             </Button>
         </div>
     );
+
+
+    const onStartButton = () => {
+        inTesting.current.setInProgress();
+        setReady(true);
+
+        partQuestionRef.current.partId = 0;
+        partQuestionRef.current.questionId = 0;
+    }
 
     const startTestButton = (
         <div style={{
@@ -69,7 +81,7 @@ function TestInstruction({ setReady }) {
                     fontSize: 20, 
                     fontWeight: 'bold',
                 }}
-                onClick={() => setReady(true)}
+                onClick={() => onStartButton()}
             >
                 Start the Test
             </Button>
@@ -93,13 +105,13 @@ function TestInstruction({ setReady }) {
                 where the holes will appear after the paper is <b>completely 
                 unfolded</b>.<br/>
                 <b>Click on</b> the answer to select it. Then, click 
-                the <b>Continue</b> button to move on.
+                the <b>Confirm</b> button to move on.
             </p>
             <AnswerOptions 
                 frames={EXAMPLE.answerOptions} 
                 sid={sid} 
                 setSid={setSid} 
-                locked={clickedContinue}
+                locked={confirmed}
             />
         </div>
     );
@@ -138,14 +150,13 @@ function TestInstruction({ setReady }) {
         </div>
     );
 
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {title}
             {section1}
-            {continueButton}
-            {clickedContinue && section2}
-            {clickedContinue && startTestButton}
+            {confirmButton}
+            {confirmed && section2}
+            {confirmed && startTestButton}
         </div>
     );
 }

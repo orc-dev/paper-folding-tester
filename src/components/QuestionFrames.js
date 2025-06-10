@@ -1,9 +1,10 @@
 import { Row, Col } from 'antd';
+import { computeFill } from '../constants/config';
 import { useTestContext } from './TestContext';
-
+import { StatusTracker } from '../utils/StatusTracker';
 
 function QuestionFrame({ frameData }) {
-    const { themeMode, computeFill } = useTestContext();
+    const { themeMode } = useTestContext();
 
     // Geometry and style constants
     const sideSize = 24;
@@ -100,12 +101,37 @@ function QuestionFrame({ frameData }) {
 
 
 function QuestionFrames({frames, padding=12}) {
+    const { inTesting, objHoverOn, objRef } = useTestContext();
+
+    const handleMouseEnter = (i) => {
+        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+            return;
+        }
+        objHoverOn.current = `QF${i + 1}`;
+    };
+
+    const handleMouseLeave = (i) => {
+        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+            return;
+        }
+        objHoverOn.current = 'none';
+    };
+
     return (
         <div>
             <Row gutter={[24, 24]} justify='start'>
                 {frames?.map((frameData, i) => (
                     <Col key={i}>
-                        <div style={{padding: padding}}>
+                        <div 
+                            style={{padding: padding}}
+                            ref={(el) => {
+                                if (i <= 4) {
+                                    objRef.current[`QF${i + 1}`] = el;
+                                }
+                            }}
+                            onMouseEnter={() => handleMouseEnter(i)}
+                            onMouseLeave={() => handleMouseLeave(i)}
+                        >
                             <QuestionFrame frameData={frameData} />
                         </div>
                     </Col>

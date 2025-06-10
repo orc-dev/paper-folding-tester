@@ -1,9 +1,11 @@
+import { computeFill } from '../constants/config';
+import { StatusTracker } from '../utils/StatusTracker';
 import { useTestContext } from './TestContext';
 import { Row, Col } from 'antd';
 
 
 function AnswerOption({ holeList=[] }) {
-    const { themeMode, computeFill } = useTestContext();
+    const { themeMode } = useTestContext();
 
     // Geometry and size
     const sideSize = 24;
@@ -81,7 +83,8 @@ function AnswerOption({ holeList=[] }) {
 }
 
 function AnswerOptions({ frames, sid, setSid, locked=false }) {
-    
+    const { inTesting, objHoverOn, objRef } = useTestContext();
+
     const getBoxShadow = (i) => {
         if (i !== sid) {
             return 'none';
@@ -92,16 +95,37 @@ function AnswerOptions({ frames, sid, setSid, locked=false }) {
         return '0 0 0 3px hsl(248, 100%, 54.7%)';
     }
 
+    const handleMouseEnter = (i) => {
+        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+            return;
+        }
+        objHoverOn.current = `AO${i + 1}`;
+    };
+
+    const handleMouseLeave = (i) => {
+        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+            return;
+        }
+        objHoverOn.current = 'none';
+    };
+
+    const handleOnClick = (i) => {
+        if (locked) {
+            return;
+        }
+        setSid(i);
+    }
+
     return (
         <div style={{textAlign: 'center'}}>
             <Row gutter={[24, 24]} justify='start'>
                 {frames?.map((holeList, i) => (
                     <Col key={i}>
                         <div
-                            onClick={() => {
-                                if (locked) return;
-                                setSid(i);
-                            }}
+                            ref={(el) => { objRef.current[`AO${i + 1}`] = el }}
+                            onMouseEnter={() => handleMouseEnter(i)}
+                            onMouseLeave={() => handleMouseLeave(i)}
+                            onClick={() => handleOnClick(i)}
                             style={{
                                 boxShadow: getBoxShadow(i),
                                 borderRadius: 8,

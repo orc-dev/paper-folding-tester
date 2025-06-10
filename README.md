@@ -48,22 +48,14 @@
 ### Object Labels
 - `QF1`–`QF5`: Question frames (top row), 1-indexed
 - `AO1`–`AO5`: Answer options (bottom row), 1-indexed
-- `BTN`: Continue button
-- `NONE`: Any other area not covered by the above
-
-
-### Object Coordinate System
-- We define a custom coordinate system, called the **Object Coordinate**, which is independent of screen size, display resolution, and browser zoom level.
-- The origin `(0, 0)` is set at the center of `AO3` (the third answer option).
-- The unit length is defined as `1/96` of the side length of `AO3`.
-- The X-axis increases from left to right, and the Y-axis increases from bottom to top.
-- For each frame, the mouse position will be converted into this coordinate system for logging purposes.
+- `CONF`: the `Confirm` button
+- `none`: Any other area not covered by the above
 
 
 ### Sampling Policy
-- `Maximum Sample Rate`: **1 sample every 100ms** (i.e., up to 10 frames per second).
-- `Minimum Displacement Threshold`: **8 units** (in Object Coordinate).
-- **Click events** are **ALWAYS** recorded, regardless of the above constraints, and reset the sampling timer.
+- `Minimum Displacement Threshold`: **12 units**.
+- **Click events** are **ALWAYS** recorded, regardless.
+- **Hover Object changing** are **ALWAYS** recorded.
 
 
 ###  CSV Header (Data Schema)
@@ -71,10 +63,10 @@
 |-----------------|-----------------|
 | `PART_ID`       | The part number of the test (1 or 2) |
 | `QUESTION_ID`   | The question index *within that part*, 1-indexed, up to 10 |
-| `TIMESTAMP`     | Time when the event was recorded, in `hh:mm:ss.s` format (granularity: 0.1s) |
+| `TIMESTAMP`     | Time when the event was recorded, in `hh:mm:ss.sss` format (granularity: ms) |
 | `STEP`          | 0-indexed frame counter (per question) |
-| `MOUSE_X`       | X coordinate in the **object coordinate system** |
-| `MOUSE_Y`       | Y coordinate in the **object coordinate system** |
-| `OBJ_HOVER_ON`  | The object currently under the mouse: `QF1` to `QF5`, `AO1` to `AO5`, `BTN`, or `NONE` |
-| `N_CLICK`       | Number of clicks so far in this question; `-1` if this event is not a click |
-|
+| `MOUSE_X`       | X coordinate in the **viewport coordinate system** |
+| `MOUSE_Y`       | Y coordinate in the **viewport coordinate system** |
+| `OBJ_HOVER_ON`  | The object currently under the mouse: `QF1` to `QF5`, `AO1` to `AO5`, `BTN`, or `none` |
+| `CLICK`         | `1`: is a click event, `0`: not a click event |
+
