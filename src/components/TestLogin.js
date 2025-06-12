@@ -94,7 +94,10 @@ function TestLogin() {
     const enterTestButton = (
         <Button 
             type='primary' 
-            onClick={() => { setStage(APP_STAGE.instruction) }} 
+            onClick={() => { 
+                metaData.current.startTime = new Date();
+                setStage(APP_STAGE.instruction);
+            }} 
             style={{fontWeight: 'bold', height: '40px'}}
             block
         >

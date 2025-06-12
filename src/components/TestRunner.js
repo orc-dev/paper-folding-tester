@@ -58,6 +58,9 @@ function TestRunner() {
             setSid(null);
         } 
         else {
+            // Count records
+            metaData.current.recordCount = csvDataBuf.current.length;
+            
             partQuestionRef.current.partId = -2;
             partQuestionRef.current.questionId = -2;
             stageRef.current = APP_STAGE.upload;

@@ -8,15 +8,16 @@ import TestDataUploader from './components/TestDataUploader.js';
 import MouseEventRecorder from './components/MouseEventRecorder.js';
 import MouseTrace from './components/MouseTrace.js';
 
+// Parameter set
+const enableModeSwitch = true;
+const enableMouseTrace = true;
 
 function App() {
     const { APP_STAGE, stage, setThemeMode } = useTestContext();
-    const enableModeSwitch = true;
-    const enableMouseTrace = true;
-
+   
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (!enableModeSwitch) {
+            if (!enableModeSwitch || stage === APP_STAGE.login) {
                 return;
             }
             else if (e.key === '1') {
@@ -32,7 +33,7 @@ function App() {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     // eslint-disable-next-line
-    }, []);
+    }, [stage]);
 
     const currentComponent = {
         [APP_STAGE.login]:       <TestLogin />,

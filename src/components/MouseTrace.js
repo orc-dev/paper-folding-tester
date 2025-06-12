@@ -10,16 +10,14 @@ function MouseTrace() {
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'd') {
-                const currentPart = partQuestionRef.current.partId + 1;
-                const currentQ = partQuestionRef.current.questionId + 1;
-
+                const pNum = partQuestionRef.current.partId + 1;
+                const qNum = partQuestionRef.current.questionId + 1;
                 const filtered = csvDataBuf.current.filter(
-                    ([partId, questionId]) =>
-                        partId === currentPart && questionId === currentQ
+                    ([p, q]) => (p === pNum && q === qNum)
                 );
                 setVisiblePoints(filtered);
                 setDrawMode(true);
-                console.log(`Draw ${filtered.length} points for P${currentPart} Q${currentQ}`);
+                console.log(`Draw ${filtered.length} points for P${pNum} Q${qNum}`);
                 console.log(csvDataBuf.current);
             } 
             else if (e.key === 'c') {
@@ -27,7 +25,6 @@ function MouseTrace() {
                 setDrawMode(false);
             }
         };
-
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     // eslint-disable-next-line

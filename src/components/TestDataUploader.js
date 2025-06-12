@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { GAS_URL, ACTION, CSV_HEADER, createFrozenMap } from '../constants/config';
 import { useTestContext } from './TestContext';
-import { GAS_URL, ACTION, CSV_HEADER } from '../constants/config';
 import { Spin, Alert, Button } from 'antd';
 
+// A map to control the format of meta data labels
 const metaDataLabel = Object.freeze({
     pid: 'PID',
     firstName: 'First_Name',
@@ -14,14 +15,21 @@ const metaDataLabel = Object.freeze({
     answer2: 'Answer_2',
     score1: 'Score_1',
     score2: 'Score_2',
+    recordCount: 'Record_Count',
 });
 
-function TestDataUploader() {
+// Uploading status
+const UPLOAD_STATUS = createFrozenMap([
+    'uploading', 'success', 'error',
+]);
 
+
+function TestDataUploader() {
     const { metaData, csvDataBuf } = useTestContext();
     const fileName = useRef('??.csv');
-    const [taskDone, setTaskDone] = useState(false);
-    const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
+    const csvContent = useRef(null);
+    const [requestSent, setRequestSent] = useState(false);
+    const [status, setStatus] = useState(UPLOAD_STATUS.uploading);
     
     const generateFileName = (isDownloaded = false) => {
         const id = metaData.current.pid;
@@ -48,10 +56,7 @@ function TestDataUploader() {
         return csvContentArray.join('\n');
     };
 
-    const sendCSVToDrive = () => {
-        fileName.current = generateFileName();
-        const csvContent = generateCSVContent();
-
+    const sendPostRequest = () => {
         fetch(GAS_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -62,17 +67,17 @@ function TestDataUploader() {
             },
             body: JSON.stringify({ 
                 fileName: fileName.current, 
-                csvContent, 
+                csvContent: csvContent.current,
                 emailAddress: metaData.current.email,
             }),
         })
         .then(() => {
-            console.log('Tasks have been finished and ready to check.');
-            setTaskDone(true);
+            console.log('Request sent successfully.');
+            setRequestSent(true);
         })
         .catch(error => {
             console.error('Error: ', error);
-            setStatus('error');
+            setStatus(UPLOAD_STATUS.error);
         });
     };
     
@@ -85,59 +90,64 @@ function TestDataUploader() {
             .then(data => {
                 if (!data.success) {
                     console.error('Verification failed: ', data.message);
-                    setStatus('error');
+                    setStatus(UPLOAD_STATUS.error);
                     return;
                 }
                 if (data.taskCompleted && data.fileExists) {
                     console.log('Task completed and file successfully uploaded!');
-                    setStatus('success');
+                    setStatus(UPLOAD_STATUS.success);
                     return;
                 }
                 console.warn('Task marked as completed, but file not found.');
-                setStatus('error');
+                setStatus(UPLOAD_STATUS.error);
             })
             .catch(error => {
                 console.error('Error checking upload status: ', error);
-                setStatus('error');
+                setStatus(UPLOAD_STATUS.error);
             });
     };
 
+    // Upload csv to google drive and verify upload status
     useEffect(() => {
-        // Set a timeout to trigger the manual download option if no response
-        const timeoutTimer = setTimeout(() => {
-            setStatus(prevStatus => {
-                if (prevStatus === 'loading') {
-                    console.log('status is set to TIMEOUT.');
-                    return 'error';
-                }
-                return prevStatus; // If status changed, keep the latest value
-            });
-        }, 20000); // 20 seconds timeout
+        if (!requestSent) {
+            // Prepare csv file
+            fileName.current = generateFileName();
+            csvContent.current = generateCSVContent();
+            console.log('csv file is ready.');
 
-        return () => {
-            clearTimeout(timeoutTimer);
-        };
-    // eslint-disable-next-line
-    }, []);
+            // Send Post Request
+            sendPostRequest();
+            console.log('Sending request for \'POST\'...');
+            
+            // Schedule timeout check in 20 sec.
+            const timeoutTimer = setTimeout(() => {
+                setStatus(prev => {
+                    if (prev === UPLOAD_STATUS.uploading) {
+                        console.log('Error: request TIMEOUT.');
+                        return UPLOAD_STATUS.error;
+                    }
+                    return prev;
+                });
+            }, 20000);
 
-    useEffect(() => {
-        if (!taskDone) {
-            sendCSVToDrive();
-            return;
+            return () => clearTimeout(timeoutTimer);
         }
+        
+        // Schedule upload verification in 2 sec.
+        console.log('Verifying file upload status...');
         const verifyTimer = setTimeout(() => {
             verifyCSVUpload();
         }, 2000);
 
-        return () => {
-            clearTimeout(verifyTimer);
-        };
+        return () => clearTimeout(verifyTimer);
+        
     // eslint-disable-next-line
-    }, [taskDone]);
+    }, [requestSent]);
 
     const downloadCSV = () => {
-        const csvContent = generateCSVContent();
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob(
+            [csvContent.current], { type: 'text/csv;charset=utf-8;' }
+        );
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = generateFileName(true);
@@ -146,7 +156,7 @@ function TestDataUploader() {
         document.body.removeChild(link);
     };
 
-
+    // UI components
     const message = (
         <div style={styles.msgDiv}>
             Congratulations! You have completed the test. Thank you!
@@ -156,7 +166,7 @@ function TestDataUploader() {
     const alertSpin = (
         <Spin size='large'>
             <Alert 
-                message='Uploading data... Please wait.'
+                message='Uploading data... Please wait...'
                 type='info' 
                 showIcon 
                 style={styles.alert}
@@ -196,9 +206,9 @@ function TestDataUploader() {
         <div style={styles.outerDiv}>
             {message}
             <div style={styles.alertDiv}>
-                {status === 'loading' && alertSpin}
-                {status === 'success' && alertSuccess}
-                {(status === 'error') && (<>
+                {status === UPLOAD_STATUS.uploading && alertSpin}
+                {status === UPLOAD_STATUS.success && alertSuccess}
+                {status === UPLOAD_STATUS.error && (<>
                     {alertBusy}
                     {downLoadButton}
                 </>)}
@@ -206,8 +216,6 @@ function TestDataUploader() {
         </div>
     );
 }
-
-export default TestDataUploader;
 
 const styles = {
     outerDiv: {
@@ -238,3 +246,5 @@ const styles = {
         borderRadius: '8px',
     },
 };
+
+export default TestDataUploader;

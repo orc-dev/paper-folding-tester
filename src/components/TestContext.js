@@ -20,12 +20,13 @@ export const TestContextProvider = ({ children }) => {
         firstName: '?',
         lastName: '?',
         email: '?@?',
-        startTime: new Date(),
+        startTime: `${new Date()}_before_login`,
         theme: '??',
         answer1: '',
         answer2: '',
         score1: 0,
         score2: 0,
+        recordCount: 0,
     });
 
     // Mouse event data collection
@@ -43,8 +44,7 @@ export const TestContextProvider = ({ children }) => {
         <TestContext.Provider
             value={{
                 APP_STAGE, stage, setStage, stageRef, 
-                themeMode, setThemeMode,
-                metaData, objRef,
+                themeMode, setThemeMode, metaData, objRef,
                 csvDataBuf, mousePosRef, objHoverOn, partQuestionRef,
             }}
         >
