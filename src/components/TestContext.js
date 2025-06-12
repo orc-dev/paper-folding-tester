@@ -12,7 +12,7 @@ export const TestContextProvider = ({ children }) => {
     ]);
     const [stage, setStage] = useState(APP_STAGE.login);
     const stageRef = useRef(APP_STAGE.login);
-    const [themeMode, setThemeMode] = useState(THEME.ALPHA_BLENDING);
+    const [themeMode, setThemeMode] = useState(THEME.BLACK_WHITE);
 
     // Meta data
     const metaData = useRef({
@@ -21,7 +21,7 @@ export const TestContextProvider = ({ children }) => {
         lastName: '?',
         email: '?@?',
         startTime: `${new Date()}_before_login`,
-        theme: '??',
+        theme: THEME.BLACK_WHITE,
         answer1: '',
         answer2: '',
         score1: 0,

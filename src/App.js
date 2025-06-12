@@ -8,9 +8,9 @@ import TestDataUploader from './components/TestDataUploader.js';
 import MouseEventRecorder from './components/MouseEventRecorder.js';
 import MouseTrace from './components/MouseTrace.js';
 
-// Parameter set
-const enableModeSwitch = true;
-const enableMouseTrace = true;
+// Parameters for debug/develop mode
+const enableModeSwitch = false;
+const enableMouseTrace = false;
 
 function App() {
     const { APP_STAGE, stage, setThemeMode } = useTestContext();

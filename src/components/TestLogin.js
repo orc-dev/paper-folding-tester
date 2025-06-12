@@ -5,7 +5,7 @@ import { Input, Button, Alert, Space } from 'antd';
 
 
 function TestLogin() {
-    const { APP_STAGE, setStage, metaData } = useTestContext();
+    const { APP_STAGE, setStage, setThemeMode, metaData } = useTestContext();
     const [email, setEmail] = useState('');
     const [errorMsg, setErrorMsg] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ function TestLogin() {
                     metaData.current.firstName = data.firstName;
                     metaData.current.lastName = data.lastName;
                     metaData.current.email = email;
-                    //metaData.current.theme = data.theme;
+                    metaData.current.theme = data.theme;
                     
                     setTaskCompleted(data.taskCompleted);
                     setSuccessMessage(`Welcome, ${data.firstName} ${data.lastName}!`);
@@ -97,6 +97,7 @@ function TestLogin() {
             onClick={() => { 
                 metaData.current.startTime = new Date();
                 setStage(APP_STAGE.instruction);
+                setThemeMode(metaData.current.theme);
             }} 
             style={{fontWeight: 'bold', height: '40px'}}
             block
@@ -149,7 +150,7 @@ const boxStyle = {
     padding: 30,
     border: '1px solid rgb(255, 255, 255)',
     borderRadius: 8,
-    backgroundColor: 'rgb(147, 200, 220)',
+    background: 'linear-gradient(to bottom right, rgb(147, 200, 220), rgb(246, 233, 212))',
     boxShadow: '4px 4px 12px rgba(0, 0, 0, 0.3)',
 };
 const titleStyle = {

@@ -1,6 +1,6 @@
 
 // Google App Script | Web app URL
-const webAppKey = 'AKfycbwtiKcDFlXiUF-EYc4ZD8iZzDC_JmSfsu1Znueyzsuoxpsq3oH1Gnpk5y0p0hLpKHEs';
+const webAppKey = 'AKfycbwA2BGT4KJFMdo8P_IAISeofAWO98H8itScjojD9HdgJr5KBao8PwcMPltc7uvX2ajq';
 export const GAS_URL = `https://script.google.com/macros/s/${webAppKey}/exec`;
 export const ACTION = {
     loginVerification: 'loginVerification',
