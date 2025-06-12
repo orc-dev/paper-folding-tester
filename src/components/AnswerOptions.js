@@ -1,5 +1,4 @@
 import { computeFill } from '../constants/config';
-import { StatusTracker } from '../utils/StatusTracker';
 import { useTestContext } from './TestContext';
 import { Row, Col } from 'antd';
 
@@ -83,7 +82,7 @@ function AnswerOption({ holeList=[] }) {
 }
 
 function AnswerOptions({ frames, sid, setSid, locked=false }) {
-    const { inTesting, objHoverOn, objRef } = useTestContext();
+    const { APP_STAGE, stageRef, objHoverOn, objRef } = useTestContext();
 
     const getBoxShadow = (i) => {
         if (i !== sid) {
@@ -96,14 +95,14 @@ function AnswerOptions({ frames, sid, setSid, locked=false }) {
     }
 
     const handleMouseEnter = (i) => {
-        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+        if (stageRef.current !== APP_STAGE.test) {
             return;
         }
         objHoverOn.current = `AO${i + 1}`;
     };
 
     const handleMouseLeave = (i) => {
-        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+        if (stageRef.current !== APP_STAGE.test) {
             return;
         }
         objHoverOn.current = 'none';

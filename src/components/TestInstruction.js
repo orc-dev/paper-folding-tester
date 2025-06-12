@@ -6,9 +6,9 @@ import QuestionFrames from './QuestionFrames';
 import AnswerOptions from './AnswerOptions';
 
 
-function TestInstruction({ setReady }) {
+function TestInstruction() {
 
-    const { inTesting, partQuestionRef } = useTestContext();
+    const { APP_STAGE, setStage, stageRef, partQuestionRef } = useTestContext();
     const [sid, setSid] = useState(null);
     const [confirmed, setConfirmed] = useState(false);
     const secondPartRef = useRef(null);
@@ -62,8 +62,8 @@ function TestInstruction({ setReady }) {
     const onStartButton = () => {
         partQuestionRef.current.partId = 0;
         partQuestionRef.current.questionId = 0;
-        inTesting.current.setInProgress();
-        setReady(true);
+        stageRef.current = APP_STAGE.test;
+        setStage(APP_STAGE.test);
     }
 
     const startTestButton = (

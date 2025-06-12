@@ -1,13 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { MIN_DISPLACEMENT_THR, OBJ_LIST, formatTime } from '../constants/config';
 import { DisplacementChecker } from '../utils/DisplacementChecker';
-import { StatusTracker } from '../utils/StatusTracker';
 import { useTestContext } from './TestContext';
 
 function MouseEventRecorder() {
     const { 
-        csvDataBuf, mousePosRef, inTesting, 
-        partQuestionRef, objHoverOn 
+        APP_STAGE, stageRef, csvDataBuf, mousePosRef, 
+        partQuestionRef, objHoverOn,
     } = useTestContext();
 
     const currentHover = useRef('START');
@@ -24,7 +23,7 @@ function MouseEventRecorder() {
             mousePosRef.current.y = y;
 
             // Collect data only when participant is doing the test questions
-            if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+            if (stageRef.current !== APP_STAGE.test) {
                 return;
             }
             // Hover-on updates
@@ -52,7 +51,7 @@ function MouseEventRecorder() {
 
         const handleClick = (e) => {
             // Collect data only when participant is doing the test questions
-            if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+            if (stageRef.current !== APP_STAGE.test) {
                 return;
             }
             // This handler does not write data when 'Confirm' button is clicked.

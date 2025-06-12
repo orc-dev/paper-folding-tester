@@ -1,5 +1,13 @@
 
+// Google App Script | Web app URL
+const webAppKey = 'AKfycbwtiKcDFlXiUF-EYc4ZD8iZzDC_JmSfsu1Znueyzsuoxpsq3oH1Gnpk5y0p0hLpKHEs';
+export const GAS_URL = `https://script.google.com/macros/s/${webAppKey}/exec`;
+export const ACTION = {
+    loginVerification: 'loginVerification',
+    completionVerification: 'completionVerification',
+};
 
+// Color Themes
 export const THEME = Object.freeze({
     BLACK_WHITE: 'white',
     SOLID_COLOR: 'solid',
@@ -73,20 +81,23 @@ export function computeFill(mode, n=1) {
 
 export const MIN_DISPLACEMENT_THR = 10;
 
-export const CSV_HEADER = Object.freeze(
-    Object.fromEntries([
-        'PART_ID', 'QUESTION_ID', 'TIMESTAMP', 'STEP',
-        'MOUSE_X', 'MOUSE_Y', 'OBJ_HOVER_ON', 'CLICK',
-    ].map(colName => [colName, colName]))
-);
 
-export const OBJ_LIST = Object.freeze(
-    Object.fromEntries([
-        'QF1', 'QF2', 'QF3', 'QF4', 'QF5',
-        'AO1', 'AO2', 'AO3', 'AO4', 'AO5',
-        'CONF',
-    ].map(colName => [colName, colName]))
-);
+export function createFrozenMap(list) {
+    return Object.freeze(
+        Object.fromEntries(list.map(item => [item, item]))
+    );
+}
+
+export const CSV_HEADER = createFrozenMap([
+    'PART_ID', 'QUESTION_ID', 'TIMESTAMP', 'STEP',
+    'MOUSE_X', 'MOUSE_Y', 'OBJ_HOVER_ON', 'CLICK',
+]);
+
+export const OBJ_LIST = createFrozenMap([
+    'QF1', 'QF2', 'QF3', 'QF4', 'QF5',
+    'AO1', 'AO2', 'AO3', 'AO4', 'AO5',
+    'CONF',
+]);
 
 export function formatTime(date = new Date()) {
     const h = String(date.getHours()).padStart(2, '0');

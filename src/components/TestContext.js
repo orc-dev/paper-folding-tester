@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useRef } from 'react';
-import { THEME } from '../constants/config';
-import { StatusTracker } from '../utils/StatusTracker';
+import { THEME, createFrozenMap } from '../constants/config';
 
 
 const TestContext = createContext();
@@ -8,6 +7,11 @@ export const useTestContext = () => useContext(TestContext);
 
 export const TestContextProvider = ({ children }) => {
     // States and refs
+    const APP_STAGE = createFrozenMap([
+        'login', 'instruction', 'test', 'upload',
+    ]);
+    const [stage, setStage] = useState(APP_STAGE.login);
+    const stageRef = useRef(APP_STAGE.login);
     const [themeMode, setThemeMode] = useState(THEME.ALPHA_BLENDING);
 
     // Meta data
@@ -16,14 +20,18 @@ export const TestContextProvider = ({ children }) => {
         firstName: '?',
         lastName: '?',
         email: '?@?',
-        date: new Date(), 
+        startTime: new Date(),
+        theme: '??',
+        answer1: '',
+        answer2: '',
+        score1: 0,
+        score2: 0,
     });
 
-    // Data collection
+    // Mouse event data collection
     const csvDataBuf = useRef([]);
     const mousePosRef = useRef({ x: 0, y: 0 });
     const objHoverOn = useRef('none');
-    const inTesting = useRef(new StatusTracker());
     const partQuestionRef = useRef({ partId: -1, questionId: -1 });
     const objRef = useRef({
         QF1: null, QF2: null, QF3: null, QF4: null, QF5: null,
@@ -34,9 +42,10 @@ export const TestContextProvider = ({ children }) => {
     return (
         <TestContext.Provider
             value={{
+                APP_STAGE, stage, setStage, stageRef, 
                 themeMode, setThemeMode,
-                csvDataBuf, mousePosRef, inTesting, objHoverOn, metaData,
-                partQuestionRef, objRef,
+                metaData, objRef,
+                csvDataBuf, mousePosRef, objHoverOn, partQuestionRef,
             }}
         >
             {children}

@@ -1,7 +1,7 @@
 import { Row, Col } from 'antd';
 import { computeFill } from '../constants/config';
 import { useTestContext } from './TestContext';
-import { StatusTracker } from '../utils/StatusTracker';
+
 
 function QuestionFrame({ frameData }) {
     const { themeMode } = useTestContext();
@@ -101,17 +101,17 @@ function QuestionFrame({ frameData }) {
 
 
 function QuestionFrames({frames, padding=12}) {
-    const { inTesting, objHoverOn, objRef } = useTestContext();
+    const { APP_STAGE, stageRef, objHoverOn, objRef } = useTestContext();
 
     const handleMouseEnter = (i) => {
-        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+        if (stageRef.current !== APP_STAGE.test) {
             return;
         }
         objHoverOn.current = `QF${i + 1}`;
     };
 
     const handleMouseLeave = (i) => {
-        if (inTesting.current.status !== StatusTracker.IN_PROGRESS) {
+        if (stageRef.current !== APP_STAGE.test) {
             return;
         }
         objHoverOn.current = 'none';
