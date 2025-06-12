@@ -1,13 +1,12 @@
 # Paper Folding Tester
 
+## Usage and Deployment
+- A web-based tool inspired by the Paper Folding Test (VZ-2) developed by ETS  
+- Deployed for academic research use: https://schenck-lab.github.io/paper-folding-test/  
+- No original ETS test content is distributed  
+- © 1962 Educational Testing Service. All rights reserved
 
-
-
-
----
-# Design Document
-
-## THEME and SVG
+## Theme and Svg
 
 ### Theme Modes
 - `BLACK_WHITE` (`'white'`):  
@@ -18,7 +17,6 @@
 
 - `ALPHA_BLENDING` (`'alpha'`):  
   Renders the paper with semi-transparent color, allowing overlapping areas to appear darker and simulate layer stacking.
-
 
 ### SVG Element Specification
 - All figures in this test are implemented using SVG elements.

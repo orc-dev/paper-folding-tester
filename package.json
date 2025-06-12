@@ -2,14 +2,13 @@
   "name": "paper-folding-tester",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://orc-dev.github.io/paper-folding-tester",
+  "homepage": "https://schenck-lab.github.io/paper-folding-test",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.25.4",
-    "gh-pages": "^6.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "5.0.1",
@@ -21,7 +20,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "deploy:personal": "gh-pages -d build -r https://github.com/orc-dev/paper-folding-tester.git",
+    "deploy:lab": "gh-pages -d build -r https://github.com/Schenck-Lab/paper-folding-test.git"
   },
   "eslintConfig": {
     "extends": [
@@ -40,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
