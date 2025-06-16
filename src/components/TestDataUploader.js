@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../constants/firebaseConfig';
 import { GAS_URL, ACTION, CSV_HEADER, createFrozenMap } from '../constants/config';
 import { useTestContext } from './TestContext';
 import { Spin, Alert, Button } from 'antd';
@@ -30,9 +32,16 @@ function TestDataUploader() {
     const csvContent = useRef(null);
     const [requestSent, setRequestSent] = useState(false);
     const [status, setStatus] = useState(UPLOAD_STATUS.uploading);
+    const docRef = useRef(null);
+
+    useEffect(() => {
+        if (metaData.current.email && !docRef.current) {
+            docRef.current = doc(db, 'participants', metaData.current.email);
+        }
+    });
     
     const generateFileName = (isDownloaded = false) => {
-        const id = metaData.current.pid;
+        //const id = metaData.current.pid;
         const F = metaData.current.firstName.charAt(0).toUpperCase();
         const L = metaData.current.lastName.charAt(0).toUpperCase();
         const now = new Date();
@@ -41,7 +50,10 @@ function TestDataUploader() {
         const hour   = String(now.getHours()).padStart(2, '0');
         const minute = String(now.getMinutes()).padStart(2, '0');
         const suffix = isDownloaded ? '_DL.csv' : '.csv';
-        return `${id}_${F}${L}_${month}${day}_${hour}${minute}${suffix}`;
+        //return `${id}_${F}${L}_${month}${day}_${hour}${minute}${suffix}`;
+
+        // A self registered one, ignore pid
+        return `${F}${L}_${month}${day}_${hour}${minute}${suffix}`;
     }
 
     const generateCSVContent = () => {
@@ -81,6 +93,40 @@ function TestDataUploader() {
         });
     };
     
+    // const verifyCSVUpload = () => {
+    //     const action = ACTION.completionVerification;
+    //     const encodedEmail = encodeURIComponent(metaData.current.email);
+
+    //     fetch(`${GAS_URL}?action=${action}&email=${encodedEmail}&fileName=${fileName.current}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (!data.success) {
+    //                 console.error('Verification failed: ', data.message);
+    //                 setStatus(UPLOAD_STATUS.error);
+    //                 return;
+    //             }
+    //             if (data.taskCompleted && data.fileExists) {
+    //                 console.log('Task completed and file successfully uploaded!');
+    //                 setStatus(UPLOAD_STATUS.success);
+    //                 return;
+    //             }
+    //             console.warn('Task marked as completed, but file not found.');
+    //             setStatus(UPLOAD_STATUS.error);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error checking upload status: ', error);
+    //             setStatus(UPLOAD_STATUS.error);
+    //         });
+    // };
+
+    const upDateUserDoc = async () => {
+        await updateDoc(docRef.current, { 
+            csvFileName: fileName.current,
+            participationStage: 'completed',
+            'timeStamp.uploadCsv': serverTimestamp(),
+        });
+    };
+
     const verifyCSVUpload = () => {
         const action = ACTION.completionVerification;
         const encodedEmail = encodeURIComponent(metaData.current.email);
@@ -93,13 +139,22 @@ function TestDataUploader() {
                     setStatus(UPLOAD_STATUS.error);
                     return;
                 }
-                if (data.taskCompleted && data.fileExists) {
-                    console.log('Task completed and file successfully uploaded!');
+                // if (data.taskCompleted && data.fileExists) {
+                //     console.log('Task completed and file successfully uploaded!');
+                //     setStatus(UPLOAD_STATUS.success);
+                //     return;
+                // }
+                // console.warn('Task marked as completed, but file not found.');
+                // setStatus(UPLOAD_STATUS.error);
+
+                if (data.fileExists) {
+                    upDateUserDoc();
+                    console.log('File uploaded successfully!');
                     setStatus(UPLOAD_STATUS.success);
-                    return;
+                } else {
+                    setStatus(UPLOAD_STATUS.error);
                 }
-                console.warn('Task marked as completed, but file not found.');
-                setStatus(UPLOAD_STATUS.error);
+
             })
             .catch(error => {
                 console.error('Error checking upload status: ', error);
@@ -154,6 +209,8 @@ function TestDataUploader() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        upDateUserDoc();
     };
 
     // UI components

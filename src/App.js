@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { THEME } from './constants/config.js';
 import { useTestContext } from './components/TestContext.js'
+import FirebaseEmailLogin from './components/FirebaseEmailLogin.js';
 import TestLogin from './components/TestLogin.js';
 import TestInstruction from './components/TestInstruction.js';
 import TestRunner from './components/TestRunner.js';
@@ -36,7 +37,8 @@ function App() {
     }, [stage]);
 
     const currentComponent = {
-        [APP_STAGE.login]:       <TestLogin />,
+        // [APP_STAGE.login]:       <TestLogin />,
+        [APP_STAGE.login]:       <FirebaseEmailLogin />,
         [APP_STAGE.instruction]: <TestInstruction />,
         [APP_STAGE.test]:        <TestRunner />,
         [APP_STAGE.upload]:      <TestDataUploader />

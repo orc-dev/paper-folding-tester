@@ -82,3 +82,28 @@
 | `OBJ_HOVER_ON`  | The object currently under the mouse: `QF1` to `QF5`, `AO1` to `AO5`, `BTN`, or `none` |
 | `CLICK`         | `1`: is a click event, `0`: not a click event |
 
+
+## Firebase Specification
+
+- Project name: `kslab-pft-2025`
+
+### Database
+
+- Collection: `participants`
+- Document Schma
+    ```
+    auth.uid: {
+        uid: string,
+        email: string,
+        firstName: string,
+        lastName: string,
+        participationStage: 'sentLink' | 'inProgress' | 'completed',
+        timeStamp: {
+            sentLink: null,
+            startTest: null,
+            uploadCsv: null,
+        },
+        csvFileName: null,
+    }
+    ```
+
