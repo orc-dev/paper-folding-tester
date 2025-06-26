@@ -91,12 +91,13 @@ export function createFrozenMap(list) {
 export const CSV_HEADER = createFrozenMap([
     'PART_ID', 'QUESTION_ID', 'TIMESTAMP', 'STEP',
     'MOUSE_X', 'MOUSE_Y', 'OBJ_HOVER_ON', 'CLICK',
+    'MODAL',
 ]);
 
 export const OBJ_LIST = createFrozenMap([
     'QF1', 'QF2', 'QF3', 'QF4', 'QF5',
     'AO1', 'AO2', 'AO3', 'AO4', 'AO5',
-    'CONF',
+    'CONF', 'HELP',
 ]);
 
 export function formatTime(date = new Date()) {

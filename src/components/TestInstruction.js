@@ -133,13 +133,20 @@ function TestInstruction() {
                     is <b>folded</b> and <b>punched</b>.
                 </p>
                 <QuestionFrames frames={FOLDING_STEPS} padding={24} />
-
                 <p>
                     Fully <b>unfolding</b> the punched paper reveals two 
                     holes on the left side, as shown below.
                 </p>
                 <QuestionFrames frames={UNFOLDING_STEPS} padding={24} />
-
+                <div style={{
+                    padding: '12px', 
+                    backgroundColor: 'rgb(236, 230, 230)',
+                    borderRadius: '12px',
+                }}>
+                    Your score on this test will be the number marked correctly minus a fraction of the number
+                    marked incorrectly. Therefore, it will not be to your advantage to guess unless you are able to
+                    eliminate one or more of the answer choices as wrong.
+                </div>
                 <p>
                     If you are ready, please click the <b>Start 
                     the Test</b> button to begin.
@@ -148,6 +155,7 @@ function TestInstruction() {
         </div>
     );
 
+    
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {title}

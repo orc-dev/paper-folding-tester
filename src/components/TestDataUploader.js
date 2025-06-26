@@ -18,6 +18,14 @@ const metaDataLabel = Object.freeze({
     score1: 'Score_1',
     score2: 'Score_2',
     recordCount: 'Record_Count',
+    strategy: 'Strategy',
+    gender: 'Gender',
+    raceSeq: 'Races',
+    raceOther: 'Other_Race',
+    birthYear: 'Birth_Year',
+    major: 'Major',
+    games: 'Games',
+    handedness: 'Handedness',
 });
 
 // Uploading status

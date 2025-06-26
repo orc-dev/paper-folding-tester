@@ -8,7 +8,7 @@ export const useTestContext = () => useContext(TestContext);
 export const TestContextProvider = ({ children }) => {
     // States and refs
     const APP_STAGE = createFrozenMap([
-        'login', 'instruction', 'test', 'upload',
+        'login', 'instruction', 'test', 'strategy', 'about', 'upload',
     ]);
     const [stage, setStage] = useState(APP_STAGE.login);
     const stageRef = useRef(APP_STAGE.login);
@@ -27,6 +27,14 @@ export const TestContextProvider = ({ children }) => {
         score1: 0,
         score2: 0,
         recordCount: 0,
+        strategy: '?',
+        gender: '?',
+        raceSeq: [],
+        raceOther: '?',
+        birthYear: '?',
+        major: [],
+        games: [],
+        handedness: '?',
     });
 
     // Mouse event data collection
@@ -34,10 +42,11 @@ export const TestContextProvider = ({ children }) => {
     const mousePosRef = useRef({ x: 0, y: 0 });
     const objHoverOn = useRef('none');
     const partQuestionRef = useRef({ partId: -1, questionId: -1 });
+    const modalPop = useRef(false);  // If the instruction review modal is pop
     const objRef = useRef({
         QF1: null, QF2: null, QF3: null, QF4: null, QF5: null,
         AO1: null, AO2: null, AO3: null, AO4: null, AO5: null,
-        CONF: null,
+        CONF: null, HELP: null,
     });
     
     return (
@@ -45,7 +54,8 @@ export const TestContextProvider = ({ children }) => {
             value={{
                 APP_STAGE, stage, setStage, stageRef, 
                 themeMode, setThemeMode, metaData, objRef,
-                csvDataBuf, mousePosRef, objHoverOn, partQuestionRef,
+                csvDataBuf, mousePosRef, objHoverOn, 
+                partQuestionRef, modalPop,
             }}
         >
             {children}

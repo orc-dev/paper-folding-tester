@@ -5,6 +5,8 @@ import FirebaseEmailLogin from './components/FirebaseEmailLogin.js';
 import TestLogin from './components/TestLogin.js';
 import TestInstruction from './components/TestInstruction.js';
 import TestRunner from './components/TestRunner.js';
+import StrategySurvey from './components/StrategySurvey.js';
+import AboutYou from './components/AboutYou.js';
 import TestDataUploader from './components/TestDataUploader.js';
 import MouseEventRecorder from './components/MouseEventRecorder.js';
 import MouseTrace from './components/MouseTrace.js';
@@ -37,10 +39,11 @@ function App() {
     }, [stage]);
 
     const currentComponent = {
-        // [APP_STAGE.login]:       <TestLogin />,
         [APP_STAGE.login]:       <FirebaseEmailLogin />,
         [APP_STAGE.instruction]: <TestInstruction />,
         [APP_STAGE.test]:        <TestRunner />,
+        [APP_STAGE.strategy]:    <StrategySurvey />,
+        [APP_STAGE.about]:       <AboutYou />,
         [APP_STAGE.upload]:      <TestDataUploader />
     }
 

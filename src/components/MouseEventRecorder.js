@@ -6,7 +6,7 @@ import { useTestContext } from './TestContext';
 function MouseEventRecorder() {
     const { 
         APP_STAGE, stageRef, csvDataBuf, mousePosRef, 
-        partQuestionRef, objHoverOn,
+        modalPop, partQuestionRef, objHoverOn,
     } = useTestContext();
 
     const currentHover = useRef('START');
@@ -44,6 +44,7 @@ function MouseEventRecorder() {
                     y,
                     currentHover.current,
                     0,
+                    Number(modalPop.current),
                 ];
                 csvDataBuf.current.push(record);
             }
@@ -69,6 +70,7 @@ function MouseEventRecorder() {
                 y,
                 currentHover.current,
                 1,
+                Number(modalPop.current),
             ];
             csvDataBuf.current.push(record);
         };

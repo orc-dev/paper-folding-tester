@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Button, Divider } from 'antd';
+import { Button } from 'antd';
 import { QUESTIONS } from '../constants/questions'; 
 import { useTestContext } from './TestContext';
 import QuestionFrames from './QuestionFrames';
 import AnswerOptions from './AnswerOptions';
+import HelpMenu from './HelpMenu';
 import { OBJ_LIST, formatTime } from '../constants/config';
 
 
 function TestRunner() {
     const { 
         APP_STAGE, setStage, stageRef,
-        objHoverOn, objRef, mousePosRef,
+        objHoverOn, objRef, mousePosRef, modalPop,
         partQuestionRef, csvDataBuf, metaData,
     } = useTestContext();
 
@@ -40,6 +41,7 @@ function TestRunner() {
                 mousePosRef.current.y,
                 OBJ_LIST.CONF,
                 1,
+                Number(modalPop.current),
             ];
             csvDataBuf.current.push(record);
         }
@@ -64,7 +66,7 @@ function TestRunner() {
             partQuestionRef.current.partId = -2;
             partQuestionRef.current.questionId = -2;
             stageRef.current = APP_STAGE.upload;
-            setStage(APP_STAGE.upload);
+            setStage(APP_STAGE.strategy);   // SET to next stage
             setSid(null);
         }
 
@@ -79,6 +81,7 @@ function TestRunner() {
                 mousePosRef.current.y,
                 OBJ_LIST.CONF,
                 0,
+                Number(modalPop.current),
             ];
             csvDataBuf.current.push(record);
         }
@@ -87,12 +90,12 @@ function TestRunner() {
     const questionLabel = (
         <div style={{ 
             fontFamily: 'Arial, sans-serif', 
-            fontSize: '38px', 
+            fontSize: '36px', 
             fontWeight: 'bold',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 60,
+            marginTop: 55,
         }}>
             Part {pid + 1} &ndash; Question {qid + 1}
         </div>
@@ -117,7 +120,7 @@ function TestRunner() {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 50,
+            marginTop: 40,
         }}>
             <div
                 onMouseEnter={() => handleMouseEnter()}
@@ -140,19 +143,43 @@ function TestRunner() {
         </div>
     );
 
+    const prompt = () => {
+        const prompt_s = {
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: '880px',
+            marginTop: '15px',
+            marginBottom: '25px',
+            fontSize: '18px',
+            backgroundColor: 'rgb(235, 235, 235)',
+            textAlign: 'start',
+            padding: '15px',
+            borderRadius: '12px',
+            fontWeight: 'bold',
+        };
+
+        return (
+            <div style={prompt_s}>Which of the following diagrams 
+                correctly shows how the paper will look when completely 
+                unfolded after the folding and punching steps above?
+            </div>);
+    };
+
     return (
         <div>
             {questionLabel}
             <div 
                 key={`k${pid}-${qid}`}
                 className='fade-in' 
-                style={{ textAlign: 'center', marginTop: 60 }}
+                style={{ textAlign: 'center', marginTop: 45 }}
             >
                 <div style={{ display: 'inline-block' }}>
                     <QuestionFrames 
                         frames={QUESTIONS[pid][qid].questionFrames} 
                     />
-                    <Divider />
+                    {/* <Divider /> */}
+                    {prompt()}
+                    
                     <AnswerOptions 
                         frames={QUESTIONS[pid][qid].answerOptions} 
                         sid={sid}
@@ -161,6 +188,7 @@ function TestRunner() {
                 </div>
             </div>
             {confirmButton}
+            <HelpMenu />
         </div>
     );
 }
