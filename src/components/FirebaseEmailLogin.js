@@ -10,6 +10,9 @@ import { useTestContext } from './TestContext';
 import { Input, Button, Alert, Space } from 'antd';
 
 
+const FIREBASE_EMAIL = 'noreply@kslab-pft-2025.firebaseapp.com';
+const PROJECT_LINK = '"Sign in to kslab-pft-2025"';
+
 const MSG = {
     nameError: 'Please enter both your first and last name.',
     emailFormatError: 'Invalid email format. Please enter a valid email.',
@@ -17,12 +20,10 @@ const MSG = {
     sentLinkFailError: 'Error: sent link fails.',
     noUserDoc: 'RARE ERROR: No user doc found.',
     authFailError: 'Authentication failed. Please try again.',
-    sentLinkSuccess: 'Check your inbox to complete sign-in.',
     taskAlreadyComplete: 'You have already completed the task.',
     info: 'Fill out the form above to sign up.',
     sendingLinkInfo: 'Sending Link to email...',
 };
-
 
 function FirebaseEmailLogin() {
     const { APP_STAGE, setStage, metaData } = useTestContext();
@@ -39,6 +40,8 @@ function FirebaseEmailLogin() {
     const [loadingConfirm, setLoadingConfirm] = useState(false);
     const [linkSent, setLinkSent] = useState(false);
     const [validated, setValidated] = useState(false);
+
+    const emailInputRef = useRef(null);
 
     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const isSigningIn = isSignInWithEmailLink(auth, window.location.href);
@@ -102,8 +105,17 @@ function FirebaseEmailLogin() {
             await sendSignInLinkToEmail(auth, email, actionCodeSettings);
             setLinkSent(true);
             
+            emailInputRef.current?.blur();
             setAlertType('success');
-            setAlertText(MSG.sentLinkSuccess);
+            const message = (<>
+                A sign-in link email has been sent 
+                to <strong>{email}</strong> from:<br />
+                <strong>{FIREBASE_EMAIL}</strong><br />
+                <br />
+                Please click the link <strong>{PROJECT_LINK}</strong> in 
+                that email to finish the sign-in. Thank you!
+            </>);
+            setAlertText(message);
 
             // Write the first document for user
             const userDocRef = doc(db, 'participants', email);
@@ -190,6 +202,7 @@ function FirebaseEmailLogin() {
                 placeholder='Enter your email' 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
+                ref={emailInputRef}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                         handleSendLink();
@@ -231,18 +244,25 @@ function FirebaseEmailLogin() {
     );
 
     
-    const sendSignInLinkButton = () => (
-        <Button
-            type='primary'
-            onClick={handleSendLink}
-            loading={sendingLink}
-            disabled={!email.trim() || !firstName.trim() || !lastName.trim() || linkSent || alertType !== 'info'}
-            block
-            style={{ fontWeight: 'bold', height: '40px' }}
-        >
-            Send Sign-In Link
-        </Button>
-    );
+    const sendSignInLinkButton = () => {
+        const disableFlag = (
+            !email.trim() || !firstName.trim() || !lastName.trim() 
+            || linkSent || alertType !== 'info'
+        );
+
+        return (
+            <Button
+                type='primary'
+                onClick={handleSendLink}
+                loading={sendingLink}
+                disabled={disableFlag}
+                block
+                style={{ fontWeight: disableFlag ? 'normal' : 'bold', height: '40px' }}
+            >
+                Send Sign-In Link
+            </Button>
+        );
+    };
 
 
     const handleEnterTest = async () => {

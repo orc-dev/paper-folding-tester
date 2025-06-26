@@ -40,9 +40,10 @@
 - `MMDD`: Month and day of the test
 - `HHMM`: Hour and minute when the test begins
 
+
 ### Meta Data Specification
 
-- `PID`: Participant ID. Format: `'Pxxx'` for real participants, `'Txxx'` for testing.
+- `PID`: (not used for this project)
 - `First_Name`: Participant's first name.
 - `Last_Name`: Participant's last name.
 - `Email`: Participant's registered email address.
@@ -55,12 +56,47 @@
 - `Score_1`: Raw score for **Part 1**. Each correct answer adds 1 point.
 - `Score_2`: Raw score for **Part 2**. Each correct answer adds 1 point.
 - `Record_Count`: the number of record for mouse event data.
+- `Strategy`: a string of single number-character,
+- `Gender`: 
+    - `N`: 'I Choose Not to Identify'
+    - `M`: 'Male'
+    - `F`: 'Female'
+    - the string in the [] is the user's input
+- `Races`: a string of numbers
+    - 0: 'White/Non-Hispanic'
+    - 1: 'Hispanic'
+    - 2: 'Middle Eastern'
+    - 3: 'Asian'
+    - 4: 'African American'
+    - 5: 'African'
+    - 6: 'Other'
+- `Other_Race`: 'none' or user's input
+- `Birth_Year`: the birth year
+- `Major`: 'Undecided' or a string of user input with ';' separator
+- `Games`: a string of numbers with ';' separator,
+    - 0: 'First-Person Shooters (FPS)'
+    - 1: 'Racing/Driving'
+    - 2: 'Real-Time Strategy (RTS)'
+    - 3: 'Simulation/Builder'
+    - 4: 'Board Strategy Games (Chess, Go, etc.)'
+    - 5: 'Platformers'
+    - 6: 'MOBA'
+    - 7: 'Puzzle Games'
+    - 8: 'MMO (Massively Multiplayer Online)'
+    - 9: 'RPG (Role-Playing Games)'
+    - 10: 'Casual/Mobile Games'
+    - 11: 'None of the Above'
+- `Handedness`:
+    - `L`: left handedness
+    - `R`: right handedness
+    - `M`: mixed handedness
 
 
 ### Object Labels
 - `QF1`–`QF5`: Question frames (top row), 1-indexed
 - `AO1`–`AO5`: Answer options (bottom row), 1-indexed
 - `CONF`: the `Confirm` button
+- `HELP`: the `?` button for displaying the test instruction review
 - `none`: Any other area not covered by the above
 
 
@@ -79,8 +115,9 @@
 | `STEP`          | 0-indexed frame counter (per question) |
 | `MOUSE_X`       | X coordinate in the **viewport coordinate system** |
 | `MOUSE_Y`       | Y coordinate in the **viewport coordinate system** |
-| `OBJ_HOVER_ON`  | The object currently under the mouse: `QF1` to `QF5`, `AO1` to `AO5`, `BTN`, or `none` |
+| `OBJ_HOVER_ON`  | The object currently under the mouse: `QF1` to `QF5`, `AO1` to `AO5`, `BTN`, `HELP` or `none` |
 | `CLICK`         | `1`: is a click event, `0`: not a click event |
+| `HELP`          | `1`: the instruction review modal is popped, `0`: not popped |
 
 
 ## Firebase Specification
@@ -92,7 +129,7 @@
 - Collection: `participants`
 - Document Schma
     ```
-    auth.uid: {
+    email: {
         uid: string,
         email: string,
         firstName: string,
