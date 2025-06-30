@@ -11,7 +11,8 @@ import { Input, Button, Alert, Space } from 'antd';
 
 
 const FIREBASE_EMAIL = 'noreply@kslab-pft-2025.firebaseapp.com';
-const PROJECT_LINK = '"Sign in to kslab-pft-2025"';
+const PROJECT_LINK = 'Sign in to kslab-pft-2025';
+const KS_EMAIL = 'schencklab201@gmail.com';
 
 const MSG = {
     nameError: 'Please enter both your first and last name.',
@@ -113,7 +114,10 @@ function FirebaseEmailLogin() {
                 <strong>{FIREBASE_EMAIL}</strong><br />
                 <br />
                 Please click the link <strong>{PROJECT_LINK}</strong> in 
-                that email to finish the sign-in. Thank you!
+                that email to finish the sign-in.<br />
+                <br />
+                You may need to check your Spam folder if it's not in your inbox.
+                Please email <strong>{KS_EMAIL}</strong> if you have any issues or questions.
             </>);
             setAlertText(message);
 
@@ -294,11 +298,18 @@ function FirebaseEmailLogin() {
     const displayAlert = () => {
         if (isSigningIn && alertType === 'info') return null;
         
+        const alert_s = { textAlign: linkSent ? 'left' : 'center'};
+        const div_s = { height: '40px', visibility: 'hidden' };
         switch (alertType) {
             case null:
-                return isSigningIn ? null : <div style={{ height: '40px', visibility: 'hidden' }} />;
+                return isSigningIn ? null : <div style={div_s} />;
             default:
-                return <Alert message={alertText} type={alertType} showIcon />
+                return <Alert 
+                    style={alert_s} 
+                    message={alertText} 
+                    type={alertType} 
+                    showIcon 
+                />;
         }
     };
 
